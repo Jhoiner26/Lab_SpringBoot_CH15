@@ -20,21 +20,30 @@ public class PlanService {
     }
 
     public Plan obtenerPlanPorId(Long id) {
-        return planRepository.findById(id);
+        return planRepository.findById(id).orElse(null);
     }
 
     public Plan crearPlan(Plan plan) {
         validarDatosPlan(plan);
+        plan.setId(null);
         return planRepository.save(plan);
     }
 
     public Plan actualizarPlan(Long id, Plan planActualizado) {
         validarDatosPlan(planActualizado);
-        return planRepository.update(id, planActualizado);
+        if (!planRepository.existsById(id)) {
+            return null;
+        }
+        planActualizado.setId(id);
+        return planRepository.save(planActualizado);
     }
 
     public boolean eliminarPlan(Long id) {
-        return planRepository.deleteById(id);
+        if (!planRepository.existsById(id)) {
+            return false;
+        }
+        planRepository.deleteById(id);
+        return true;
     }
 
     private void validarDatosPlan(Plan plan) {
