@@ -1,5 +1,5 @@
 {
-  "curso": "🏋️ Cuerpo Activo · Lab Spring Boot (API de planes)",
+  "curso": "🏋️ Cuerpo Activo · Lab Spring Boot (planes y socios)",
   "fechaLimite": "",
   "patronTest": "^test\\(",
   "entregables": [
@@ -15,6 +15,9 @@
     { "id": "01", "titulo": "Fase 1 · Proyecto del Initializr", "test": "tests/01-proyecto.test.js" },
     { "id": "02", "titulo": "Fase 1 · Planes (GET y POST)", "test": "tests/02-planes.test.js" },
     { "id": "03", "titulo": "Fase 2 · Capas e inyección", "test": "tests/03-capas.test.js" },
-    { "id": "04", "titulo": "Fase 3 · JPA y PostgreSQL", "test": "tests/04-jpa.test.js" }
+    { "id": "04", "titulo": "Fase 3 · JPA y PostgreSQL", "test": "tests/04-jpa.test.js" },
+    { "id": "05", "titulo": "Fase 4 · CRUD con códigos HTTP", "test": "tests/05-crud.test.js" },
+    { "id": "06", "titulo": "Fase 4 · Swagger", "test": "tests/06-swagger.test.js" },
+    { "id": "07", "titulo": "Fase 5 · Socios y DTO", "test": "tests/07-socios-dto.test.js" }
   ]
 }

@@ -25,7 +25,12 @@ test("GET /api/planes trae la lista con el plan creado", async () => {
   await crearPlan("Plan estudiante", 1, 90000);
   const r = await pedir("GET", "/api/planes");
   esperarEstado(r, 200, "GET /api/planes", r.status === 405 ? "¿falta el método con @GetMapping?" : "");
-  assert.ok(Array.isArray(r.json), `GET /api/planes debería traer una lista JSON [ ... ] y trajo: ${r.texto.slice(0, 120) || "nada"}`);
+  assert.ok(
+    Array.isArray(r.json),
+    r.texto.startsWith("[")
+      ? `GET /api/planes trae un JSON cortado (${r.texto.length} caracteres): es el bucle Plan → socios → plan → … Devuelve PlanResponse, no la entidad (fase 5)`
+      : `GET /api/planes debería traer una lista JSON [ ... ] y trajo: ${r.texto.slice(0, 120) || "nada"}`
+  );
   const nombres = r.json.map((p) => p.nombre);
   assert.ok(nombres.includes(`Plan estudiante ${marca}`), `Después del POST, GET /api/planes debería incluir "Plan estudiante ${marca}" (¿el POST agrega el plan a la lista o a la base?)`);
 });

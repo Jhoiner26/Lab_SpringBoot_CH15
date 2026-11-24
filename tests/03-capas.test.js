@@ -15,13 +15,13 @@ test("PlanService es un @Service", () => {
 
 test("PlanService recibe el repositorio por su constructor", () => {
   const codigo = exigirArchivo("PlanService.java");
-  assert.match(codigo, /\bPlanService\s*\(\s*(final\s+)?PlanRepository\s+\w+\s*\)/, "PlanService debería tener un constructor que recibe un PlanRepository: public PlanService(PlanRepository planRepository)");
+  assert.match(codigo, /\bPlanService\s*\([^)]*\bPlanRepository\s+\w+[^)]*\)\s*\{/, "PlanService debería tener un constructor que recibe un PlanRepository: public PlanService(PlanRepository planRepository)");
   assert.doesNotMatch(codigo, /new\s+PlanRepository\w*\s*\(/, "PlanService no debe crear el repositorio con new: lo recibe por el constructor y Spring se lo entrega");
 });
 
 test("PlanController recibe el servicio por su constructor y ya no guarda la lista", () => {
   const codigo = exigirArchivo("PlanController.java");
-  assert.match(codigo, /\bPlanController\s*\(\s*(final\s+)?PlanService\s+\w+\s*\)/, "PlanController debería tener un constructor que recibe un PlanService: public PlanController(PlanService planService)");
+  assert.match(codigo, /\bPlanController\s*\([^)]*\bPlanService\s+\w+[^)]*\)\s*\{/, "PlanController debería tener un constructor que recibe un PlanService: public PlanController(PlanService planService)");
   assert.doesNotMatch(codigo, /new\s+(PlanService|PlanRepository\w*)\s*\(/, "PlanController no debe crear sus dependencias con new: las recibe por el constructor");
-  assert.doesNotMatch(codigo, /new\s+ArrayList\s*</, "PlanController todavía guarda la lista de planes: la lista se muda al repositorio");
+  assert.doesNotMatch(codigo, /private\s+(?:static\s+)?(?:final\s+)?(?:Array)?List\s*<\s*Plan\s*>/, "PlanController todavía guarda la lista de planes: la lista se muda al repositorio");
 });
