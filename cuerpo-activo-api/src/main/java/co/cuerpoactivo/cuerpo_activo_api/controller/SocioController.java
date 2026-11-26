@@ -3,9 +3,9 @@ package co.cuerpoactivo.cuerpo_activo_api.controller;
 import co.cuerpoactivo.cuerpo_activo_api.dto.SocioRequest;
 import co.cuerpoactivo.cuerpo_activo_api.dto.SocioResponse;
 import co.cuerpoactivo.cuerpo_activo_api.service.SocioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,20 +35,12 @@ public class SocioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SocioResponse> buscarPorId(@PathVariable Long id) {
-        return socioService.buscarPorId(id)
-                .map(socio -> ResponseEntity.ok(SocioResponse.desde(socio)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(SocioResponse.desde(socioService.buscarPorId(id)));
     }
 
     @PostMapping
-    public ResponseEntity<SocioResponse> crear(@RequestBody SocioRequest request) {
-        return socioService.crear(request)
-                .map(socio -> ResponseEntity.status(HttpStatus.CREATED).body(SocioResponse.desde(socio)))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> manejarValidacion(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity<SocioResponse> crear(@Valid @RequestBody SocioRequest request) {
+        SocioResponse creado = SocioResponse.desde(socioService.crear(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 }
